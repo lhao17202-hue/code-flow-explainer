@@ -1,0 +1,47 @@
+{
+  "skill_name": "code-flow-explainer",
+  "evals": [
+    {
+      "id": 1,
+      "name": "parameter-binding-and-return-shape",
+      "prompt": "帮我按执行顺序讲一下 `result = Client.build(config.path)` 这行代码。重点说清楚 config.path 怎么传进去，path 变量怎么变化，最后 result 是什么。",
+      "expected_output": "The answer should trace from the call site into Client.build, bind config.path to the path parameter, use a concrete example value, show before/after values for path normalization, construct the final return shape, and explain how result is used downstream.",
+      "files": [],
+      "expectations": [
+        "Starts from the exact call site and identifies the direct input config.path and output result.",
+        "Explains parameter binding inside Client.build, including classmethod or constructor mechanics if relevant.",
+        "Uses a concrete runtime scenario with example values rather than only abstract descriptions.",
+        "Shows at least one before/after intermediate value for path or related state.",
+        "Constructs the final returned object or value shape and connects it to downstream usage."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "side-effects-and-metadata-reads",
+      "prompt": "解释一下这个函数运行时到底读了什么、写了什么。它里面有 listdir、读取配置、还有 subprocess 调 git status。",
+      "expected_output": "The answer should separate directory metadata reads from file content reads, describe config-file reads, explain the subprocess command, identify whether anything is written or mutated, and avoid implying that listing a directory reads every file.",
+      "files": [],
+      "expectations": [
+        "Separates metadata reads such as directory listing from reading file contents.",
+        "Identifies subprocess execution as a side effect and states the effective command when possible.",
+        "Explicitly says whether the function writes files, mutates state, or only performs read-oriented operations.",
+        "Explains failure or fallback behavior for missing config files or failed subprocess calls.",
+        "Avoids vague wording like 'loads the project' when only metadata or selected files are read."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "async-callback-control-flow",
+      "prompt": "Walk me through this async handler step by step: when is the coroutine created, when does it actually run, what happens after await fetchUser(id), and what does the caller receive?",
+      "expected_output": "The answer should explain coroutine creation versus execution, parameter binding, the await boundary, the returned user value, important alternate/error paths, side effects such as network or database calls, and what the caller receives after awaiting the handler.",
+      "files": [],
+      "expectations": [
+        "Distinguishes creating an async coroutine from executing it after await or scheduling.",
+        "Tracks parameter binding and the value passed into fetchUser(id).",
+        "Explains the await boundary and what resumes after fetchUser resolves or rejects.",
+        "Identifies side effects such as network or database access without overstating them.",
+        "Ends with the final return value and how the caller receives or uses it."
+      ]
+    }
+  ]
+}
